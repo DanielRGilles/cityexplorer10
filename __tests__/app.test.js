@@ -1,62 +1,74 @@
 require('dotenv').config();
 
-const { execSync } = require('child_process');
+// const { execSync } = require('child_process');
 
 const fakeRequest = require('supertest');
 const app = require('../lib/app');
-const client = require('../lib/client');
+// const client = require('../lib/client');
 
 describe('app routes', () => {
   describe('routes', () => {
-    let token;
-  
-    beforeAll(async () => {
-      execSync('npm run setup-db');
-  
-      await client.connect();
-      const signInData = await fakeRequest(app)
-        .post('/auth/signup')
-        .send({
-          email: 'jon@user.com',
-          password: '1234'
-        });
-      
-      token = signInData.body.token; // eslint-disable-line
-    }, 10000);
-  
-    afterAll(done => {
-      return client.end(done);
+    test('returns location', async() => {
+
+      const expectation = 
+      {
+        'formatted_query': expect.any(String),
+        'latitude': expect.any(String),
+        'longitude': expect.any(String)
+      }
+    ;
+
+      const data = await fakeRequest(app)
+        .get('/location')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
     });
+    test('returns weather', async() => {
 
-    // test('returns animals', async() => {
+      const expectation = [
+        {
+          'forecast': 'Partly cloudy until afternoon.',
+          'time': 'Tuesday, June 29, 2021'
+        },
+        {
+          'forecast':'Mostly cloudy in the morning.',
+          'time': 'Wednesday, June 30, 2021'
+        }];
+    
 
-    //   const expectation = [
-    //     {
-    //       'id': 1,
-    //       'name': 'bessie',
-    //       'cool_factor': 3,
-    //       'owner_id': 1
-    //     },
-    //     {
-    //       'id': 2,
-    //       'name': 'jumpy',
-    //       'cool_factor': 4,
-    //       'owner_id': 1
-    //     },
-    //     {
-    //       'id': 3,
-    //       'name': 'spot',
-    //       'cool_factor': 10,
-    //       'owner_id': 1
-    //     }
-    //   ];
+      const data = await fakeRequest(app)
+        .get('/weather')
+        .expect('Content-Type', /json/)
+        .expect(200);
 
-    //   const data = await fakeRequest(app)
-    //     .get('/animals')
-    //     .expect('Content-Type', /json/)
-    //     .expect(200);
+      expect(data.body).toEqual(expectation);
+    });
+    test('returns reviews', async() => {
 
-    //   expect(data.body).toEqual(expectation);
-    // });
+      const expectation = [
+        {
+          'name': 'Pike Place Chowder',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/ijju-wYoRAxWjHPTCxyQGQ/o.jpg',
+          'price': '$$   ',
+          'rating': '4.5',
+          'url': 'https://www.yelp.com/biz/pike-place-chowder-seattle?adjust_creative=uK0rfzqjBmWNj6-d3ujNVA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=uK0rfzqjBmWNj6-d3ujNVA'
+        },
+        {
+          'name': 'Umi Sake House',
+          'image_url': 'https://s3-media3.fl.yelpcdn.com/bphoto/c-XwgpadB530bjPUAL7oFw/o.jpg',
+          'price': '$$   ',
+          'rating': '4.0',
+          'url': 'https://www.yelp.com/biz/umi-sake-house-seattle?adjust_creative=uK0rfzqjBmWNj6-d3ujNVA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=uK0rfzqjBmWNj6-d3ujNVA'
+        }];
+
+      const data = await fakeRequest(app)
+        .get('/reviews')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
+    });
   });
 });
