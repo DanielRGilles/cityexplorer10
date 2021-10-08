@@ -22,3 +22,6 @@ jobs:
       env:
         CI: true
         DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+        LOCATION_KEY: pk.64bcc2df07f1d8aa6f486db88d4ea3bb
+        WEATHER_KEY: fae69676ff084ed1aa7524097a440a3c
+        REVIEW_KEY: dfAby2795qF-21ubhdIiNKPXxDWHxAW3DYscSK-NrrIzqwoFk0H9GZBuSVc1BVa_YOQDOA9N6WFTiO1ZyV-0IuJ2L_QjzJxncFJgv8p2woRsDeRSRMETRz4fiGpfYXYx
