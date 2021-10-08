@@ -849,4 +849,5 @@ const Bdata = [{
     }
   }
 }];
+
 module.exports = { Bdata };
