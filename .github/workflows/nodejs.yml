@@ -22,6 +22,6 @@ jobs:
       env:
         CI: true
         DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
-        LOCATION_KEY: 
-        WEATHER_KEY:
-        REVIEW_KEY:
+        LOCATION_KEY: ${{ secrets.LOCATION_KEY }}
+        WEATHER_KEY:  ${{ secrets.WEATHER_KEY }}
+        REVIEW_KEY:  ${{ secrets.REVIEW_KEY }}
